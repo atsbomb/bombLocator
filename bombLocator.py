@@ -71,10 +71,15 @@ class BombLocator:
 
         return bomb_locators
 
+    def currentTimeState(func):
+        def wrapper(self):
+            current_time = cmds.currentTime(q=1)
+            func(self)
+            cmds.currentTime(current_time)
+        return wrapper
+
+    @currentTimeState
     def createLocator(self):
-        # store current time
-        current_time = cmds.currentTime(q=1)
-        
         # if nothing is selected, create a single locator at the origin and exit.
         if not self.selection:
             cmds.warning(self.warning_nothing_selected)
@@ -125,6 +130,4 @@ class BombLocator:
             cmds.refresh(suspend=0)
             cmds.progressBar(gMainProgressBar, edit=1, endProgress=1)
 
-        # restore current time
-        cmds.currentTime(current_time)
 

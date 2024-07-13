@@ -9,17 +9,11 @@ class BombLocator:
         self.source_attribute_name = 'source'
 
         # CLASS VARIABLE
-        self.selection = self._getSelection()
+        #self.selection = self._getSelection()
+        self.selection = cmds.ls(sl=1, fl=1) if cmds.ls(sl=1, fl=1) else 0
         self.component_selection = self._isSelectionComponent()
         self.active_range = self._getActiveRange()
         self.generated_locators = []
-
-    def _getSelection(self):
-        sels = cmds.ls(sl=1, fl=1)
-        if sels:
-            return sels
-        else:
-            return 0
 
     def _isSelectionComponent(self):
         if self.selection:

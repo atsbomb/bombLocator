@@ -15,7 +15,7 @@ class BombLocator(SceneState):
         self.active_range = self.getActiveRange()
         self.generated_locators = []
 
-    def _generateLocator(self, source):
+    def generateLocator(self, source):
         """ Actual locator generation.Adding meta data for later use. """
         loc = cmds.spaceLocator()[0]
 
@@ -47,12 +47,12 @@ class BombLocator(SceneState):
         # if nothing is selected, create a single locator at the origin and exit.
         if not self.sels:
             cmds.warning(self.warning_nothing_selected)
-            self._generateLocator(source = '')
+            self.generateLocator(source = '')
             return 0
 
         # create a static locator if time range wasn't selected.
         for sel in self.sels:
-            loc = self._generateLocator(source = sel)
+            loc = self.generateLocator(source = sel)
 
             # align with selection
             cmds.xform(loc, ws=1, t=cmds.xform(sel, q=1, ws=1, t=1))
@@ -65,12 +65,12 @@ class BombLocator(SceneState):
 
         # snap locator(s) to the selection for the range selected.
         if len(self.active_range) > 1:
-            paired_selection = []
+            pairedSelection = []
 
             for loc in self.generated_locators:
                 cmds.setKeyframe(loc + '.t', loc + '.r')
                 source = cmds.getAttr(loc + '.' + self.source_attribute_name)
-                paired_selection.append([source, loc])
+                pairedSelection.append([source, loc])
 
             # start progress bar
             gMainProgressBar = mel.eval('$tmp = $gMainProgressBar')
@@ -79,7 +79,7 @@ class BombLocator(SceneState):
 
             for f in self.active_range:
                 cmds.currentTime(f)
-                for pair in paired_selection:
+                for pair in pairedSelection:
                     transform = cmds.xform(pair[0], q=1, ws=1, t=1)
                     cmds.xform(pair[1], ws=1, t=transform)
                     rotation = cmds.xform(pair[0], q=1, ws=1, ro=1)
@@ -93,5 +93,27 @@ class BombLocator(SceneState):
             # stop progress bar
             cmds.refresh(suspend=0)
             cmds.progressBar(gMainProgressBar, edit=1, endProgress=1)
+
+
+    def setLocatorDriver(self):
+        for sel in self.sels:
+            source = cmds.getAttr(sel + '.' + self.source_attribute_name)
+            # needs to check if the target attribute is open
+            cmds.pointConstraint(sel, source)
+            cmds.orientConstraint(sel, source)
+            
+    def deleteLocator(self):
+        for sel in self.sels:
+            
+            # identify if it's bombLocator
+            
+            # check if it's driving the source in some way
+            
+            # ask if user wants to bake the source animation before locator deletion
+            
+            # bake if needed
+            
+            cmds.delete(sel)
+        
 
 

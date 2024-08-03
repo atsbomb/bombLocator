@@ -11,26 +11,29 @@ class SceneState():
         self.minPlayTime = cmds.playbackOptions(q=1, min=1)
         self.maxPlayTime = cmds.playbackOptions(q=1, max=1)
 
-    def restoreCurrentTime(func):
+    def tempSceneState(func):
         def wrapper(*args, **kwargs):
+            # store current time
             currentTime = cmds.currentTime(q=1)
-            func(*args, **kwargs)
-            cmds.currentTime(currentTime)
-        return wrapper
 
-    def restreSymmetricModelingModeState(func):
-        def wrapper(*args, **kwargs):
+            # store symmetrical modeling mode
             symState = cmds.symmetricModelling(q=1, s=1)
             cmds.symmetricModelling(e=1, s=0)        
-            func(*args, **kwargs)
-            cmds.symmetricModelling(e=1, s=symState)
-        return wrapper
 
-    def viewportUpdateSuspend(func):
-        def wrapper(*args, **kwargs):
+            # viewport update suspend
             cmds.refresh(suspend=1)
+
+            # function itself
             func(*args, **kwargs)
+
+            # viewport update resume
             cmds.refresh(suspend=0)
+
+            # restore symmetrical modeling mode
+            cmds.symmetricModelling(e=1, s=symState)
+
+            # restore previously saved current time
+            cmds.currentTime(currentTime)
         return wrapper
 
     def getActiveRange(self):

@@ -4,11 +4,11 @@ from bombLocator.lib import SceneState
 
 # todo
 # x Object track
-# - All feature to work with animation when range is selected
+# x All feature to work with animation when range is selected
 # - Vertex edge face track
-# - Pin to world (use stored source)
+# x Pin to world (use stored source)
 # - Pin to world with offset
-# - Reparent with maintain animation
+# x Reparent with maintain animation
 
 class BombLocator(SceneState):
     def __init__(self):
@@ -111,7 +111,7 @@ class BombLocator(SceneState):
             self.sels = self.sels[:-1]
 
         for sel in self.sels:
-            cmds.select(sel)
+            self.sels = [sel]
             self.createLocator(anim=1)
             self.sels = self.generated_locators
             self.locatorDriver()

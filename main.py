@@ -1,6 +1,6 @@
 import maya.cmds as cmds
 import maya.mel as mel
-from bombLocator.lib import SceneState
+from . import lib
 
 # todo
 # x Object track
@@ -12,7 +12,7 @@ from bombLocator.lib import SceneState
 # x Reparent with maintain animation
 # - make the bake and delete locator function
 
-class BombLocator(SceneState):
+class BombLocator(lib.SceneState):
     def __init__(self):
         super().__init__()
         
@@ -63,7 +63,7 @@ class BombLocator(SceneState):
 
         return bomb_locators
 
-    @SceneState.tempSceneState
+    @lib.SceneState.tempSceneState
     def createLocator(self, anim=0):
         # if nothing is selected, create a single locator at the origin and exit.
         if not self.sels:
@@ -101,7 +101,7 @@ class BombLocator(SceneState):
                     rotation = cmds.xform(pair[0], q=1, ws=1, ro=1)
                     cmds.xform(pair[1], ws=1, ro=rotation)
 
-    @SceneState.tempSceneState
+    @lib.SceneState.tempSceneState
     def locatorDriver(self):
         for sel in self.sels:
             source = cmds.getAttr(sel + '.' + self.sourceAttributeName)
@@ -109,7 +109,7 @@ class BombLocator(SceneState):
             cmds.pointConstraint(sel, source)
             cmds.orientConstraint(sel, source)
 
-    @SceneState.tempSceneState
+    @lib.SceneState.tempSceneState
     def reparentLocator(self, toWorld=0):
         if toWorld:
             pass
@@ -133,7 +133,7 @@ class BombLocator(SceneState):
             cmds.delete(self.generatedLocators)
             self.generatedLocators = []
 
-    @SceneState.tempSceneState
+    @lib.SceneState.tempSceneState
     def changeSource(self, offset=0):
         newSource = self.sels[1]
         cmds.setAttr(f'{self.sels[0]}.{self.sourceAttributeName}', newSource, type='string')
@@ -141,7 +141,7 @@ class BombLocator(SceneState):
         if offset:
             cmds.setAttr(f'{loc}.{self.offsetAttributeName}', 1)
 
-    @SceneState.tempSceneState
+    @lib.SceneState.tempSceneState
     def deleteLocator(self, bake=0):
         for sel in self.sels:
             if self.isValidBombLocator(sel):

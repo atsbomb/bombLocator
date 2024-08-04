@@ -1,0 +1,129 @@
+
+    menuItem
+        -label "Create Static Locator" 
+        -divider 0
+        -subMenu 0
+        -tearOff 0
+        -command "import importlib\nfrom bombLocator.main import BombLocator\n\nbl = BombLocator()\nbl.createLocator(anim=0)" 
+        -optionBox 0
+        -enable 1
+        -visible 1
+        -data 0
+        -radialPosition "N" 
+        -allowOptionBoxes 1
+        -postMenuCommandOnce 0
+        -enableCommandRepeat 1
+        -echoCommand 0
+        -italicized 0
+        -boldFont 1
+        -sourceType "python" 
+        -longDivider 1
+        menuEditorMenuItem1;
+
+    menuItem
+        -label "Create Animated Locator" 
+        -divider 0
+        -subMenu 0
+        -tearOff 0
+        -command "import importlib\nfrom bombLocator.main import BombLocator\n\nbl = BombLocator()\nbl.createLocator(anim=1)" 
+        -optionBox 0
+        -enable 1
+        -visible 1
+        -data 0
+        -radialPosition "S" 
+        -allowOptionBoxes 1
+        -postMenuCommandOnce 0
+        -enableCommandRepeat 1
+        -echoCommand 0
+        -italicized 0
+        -boldFont 1
+        -sourceType "python" 
+        -longDivider 1
+        menuEditorMenuItem2;
+
+    menuItem
+        -label "Pin to World" 
+        -divider 0
+        -subMenu 0
+        -tearOff 0
+        -command "import importlib\nfrom bombLocator.main import BombLocator\n\nbl = BombLocator()\nbl.createLocator(anim=1)\n\nbl = BombLocator()\nbl.locatorDriver()" 
+        -optionBox 0
+        -enable 1
+        -visible 1
+        -data 0
+        -radialPosition "E" 
+        -allowOptionBoxes 1
+        -postMenuCommandOnce 0
+        -enableCommandRepeat 1
+        -echoCommand 0
+        -italicized 0
+        -boldFont 1
+        -sourceType "python" 
+        -longDivider 1
+        menuEditorMenuItem3;
+
+    menuItem
+        -label "Bake and Delete Locator" 
+        -divider 0
+        -subMenu 0
+        -tearOff 0
+        -command "import importlib\nfrom bombLocator.main import BombLocator\n\nbl = BombLocator()\nbl.deleteLocator()" 
+        -optionBox 0
+        -enable 1
+        -visible 1
+        -data 0
+        -radialPosition "W" 
+        -allowOptionBoxes 1
+        -postMenuCommandOnce 0
+        -enableCommandRepeat 1
+        -echoCommand 0
+        -italicized 0
+        -boldFont 1
+        -sourceType "python" 
+        -longDivider 1
+        menuEditorMenuItem4;
+
+    menuItem
+        -label "Reparent" 
+        -divider 0
+        -subMenu 0
+        -tearOff 0
+        -command "import importlib\nfrom bombLocator.main import BombLocator\n\nbl = BombLocator()\nbl.reparentLocator(toWorld=0)" 
+        -optionBox 0
+        -enable 1
+        -visible 1
+        -data 0
+        -radialPosition "NE" 
+        -allowOptionBoxes 1
+        -postMenuCommandOnce 0
+        -enableCommandRepeat 1
+        -echoCommand 0
+        -italicized 0
+        -boldFont 1
+        -sourceType "python" 
+        -longDivider 1
+        menuEditorMenuItem5;
+
+    menuItem
+        -label "Reparent to World" 
+        -divider 0
+        -subMenu 0
+        -tearOff 0
+        -command "import importlib\nfrom bombLocator.main import BombLocator\n\nbl = BombLocator()\nbl.reparentLocator(toWorld=1)" 
+        -optionBox 0
+        -enable 1
+        -visible 1
+        -data 0
+        -radialPosition "SE" 
+        -allowOptionBoxes 1
+        -postMenuCommandOnce 0
+        -enableCommandRepeat 1
+        -echoCommand 0
+        -italicized 0
+        -boldFont 1
+        -sourceType "python" 
+        -longDivider 1
+        menuEditorMenuItem6;
+
+setParent -m ..;
+

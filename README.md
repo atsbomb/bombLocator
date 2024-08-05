@@ -12,3 +12,5 @@ Make a copy of this entire folder under `maya/xxxx/scripts/bombLocator`. Access 
 - Bake and Delete Locator
 - Reparent
 - Reparent to World
+- Select All Locators
+

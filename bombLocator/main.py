@@ -53,15 +53,15 @@ class BombLocator(lib.SceneState):
             return 0
 
     def getBombLocator(self):
-        bomb_locators = []
-        all_locators = cmds.ls(type='locator')
-        for loc in all_locators:
+        foundLocators = []
+        allLocators = cmds.ls(type='locator')
+        for loc in allLocators:
             parent = cmds.listRelatives(loc, p=1)[0]
             if cmds.objExists(parent + '.' + self.bombLocatorAttributeName):
-                if cmds.getAttr(parent + '.' + self.bombLocatorAttributeName) == 1:
-                    bomb_locators.append(parent)
+                if cmds.getAttr(parent + '.' + self.bombLocatorAttributeName) == 'bombLocator':
+                    foundLocators.append(parent)
 
-        return bomb_locators
+        return foundLocators
 
     @lib.SceneState.tempSceneState
     def createLocator(self, anim=0):

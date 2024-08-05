@@ -1,5 +1,4 @@
 import maya.cmds as cmds
-import maya.mel as mel
 from . import lib
 
 # todo
@@ -7,10 +6,11 @@ from . import lib
 # x All feature to work with animation when range is selected
 # - Vertex edge face track
 # x Pin to world (use stored source)
-# - Pin to world with offset
+# x Pin to world with offset
 # x change source
 # x Reparent with maintain animation
-# - make the bake and delete locator function
+# x make the bake and delete locator function
+# - implement update locator function
 
 class BombLocator(lib.SceneState):
     def __init__(self):
@@ -84,7 +84,7 @@ class BombLocator(lib.SceneState):
 
         cmds.select(self.generatedLocators)
 
-        # snap locator(s) to the selection for the range selected.
+        # snap locator(s) to the selection for the playback range.
         if anim:
             pairedSelection = []
 
@@ -100,6 +100,8 @@ class BombLocator(lib.SceneState):
                     cmds.xform(pair[1], ws=1, t=transform)
                     rotation = cmds.xform(pair[0], q=1, ws=1, ro=1)
                     cmds.xform(pair[1], ws=1, ro=rotation)
+                    cmds.setKeyframe(f'{pair[1]}.t')
+                    cmds.setKeyframe(f'{pair[1]}.r')
 
     @lib.SceneState.tempSceneState
     def locatorDriver(self):
@@ -179,5 +181,8 @@ class BombLocator(lib.SceneState):
                 cmds.bakeResults(source, time=self.playbackRange, sb=1, sm=0, pok=1)
                 cmds.delete(sel)
         
-
-
+    @lib.SceneState.tempSceneState
+    def updateLocator(self):
+        for sel in self.sels:
+            if self.isValidBombLocator(sel):
+                pass

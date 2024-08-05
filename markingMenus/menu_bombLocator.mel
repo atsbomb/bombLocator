@@ -4,7 +4,7 @@
         -divider 0
         -subMenu 0
         -tearOff 0
-        -command "import importlib\nfrom bombLocator.main import BombLocator\n\nbl = BombLocator()\nbl.createLocator(anim=0)" 
+        -command "from bombLocator.main import *\n\nbl = BombLocator()\nbl.createLocator(anim=0)" 
         -optionBox 0
         -enable 1
         -visible 1
@@ -25,7 +25,7 @@
         -divider 0
         -subMenu 0
         -tearOff 0
-        -command "import importlib\nfrom bombLocator.main import BombLocator\n\nbl = BombLocator()\nbl.createLocator(anim=1)" 
+        -command "from bombLocator.main import *\n\nbl = BombLocator()\nbl.createLocator(anim=1)" 
         -optionBox 0
         -enable 1
         -visible 1
@@ -46,7 +46,7 @@
         -divider 0
         -subMenu 0
         -tearOff 0
-        -command "import importlib\nfrom bombLocator.main import BombLocator\n\nbl = BombLocator()\nbl.createLocator(anim=1)\n\nbl = BombLocator()\nbl.locatorDriver()" 
+        -command "from bombLocator.main import *\n\nbl = BombLocator()\nbl.createLocator(anim=1)\n\nbl = BombLocator()\nbl.locatorDriver()" 
         -optionBox 0
         -enable 1
         -visible 1
@@ -67,7 +67,7 @@
         -divider 0
         -subMenu 0
         -tearOff 0
-        -command "import importlib\nfrom bombLocator.main import BombLocator\n\nbl = BombLocator()\nbl.deleteLocator()" 
+        -command "from bombLocator.main import *\n\nbl = BombLocator()\nbl.deleteLocator()" 
         -optionBox 0
         -enable 1
         -visible 1
@@ -88,7 +88,7 @@
         -divider 0
         -subMenu 0
         -tearOff 0
-        -command "import importlib\nfrom bombLocator.main import BombLocator\n\nbl = BombLocator()\nbl.reparentLocator(toWorld=0)" 
+        -command "from bombLocator.main import *\n\nbl = BombLocator()\nbl.reparentLocator(toWorld=0)" 
         -optionBox 0
         -enable 1
         -visible 1
@@ -109,7 +109,7 @@
         -divider 0
         -subMenu 0
         -tearOff 0
-        -command "import importlib\nfrom bombLocator.main import BombLocator\n\nbl = BombLocator()\nbl.reparentLocator(toWorld=1)" 
+        -command "from bombLocator.main import *\n\nbl = BombLocator()\nbl.reparentLocator(toWorld=1)" 
         -optionBox 0
         -enable 1
         -visible 1
@@ -124,6 +124,27 @@
         -sourceType "python" 
         -longDivider 1
         menuEditorMenuItem6;
+
+    menuItem
+        -label "Select All Locators" 
+        -divider 0
+        -subMenu 0
+        -tearOff 0
+        -command "import maya.cmds as cmds\nfrom bombLocator import *\n\nbl = BombLocator()\ncmds.select(bl.getBombLocator())\n" 
+        -optionBox 0
+        -enable 1
+        -visible 1
+        -data 0
+        -radialPosition "NW" 
+        -allowOptionBoxes 1
+        -postMenuCommandOnce 0
+        -enableCommandRepeat 1
+        -echoCommand 0
+        -italicized 0
+        -boldFont 0
+        -sourceType "python" 
+        -longDivider 1
+        menuEditorMenuItem7;
 
 setParent -m ..;
 

@@ -104,6 +104,14 @@ class BombLocator(lib.SceneState):
     @lib.SceneState.tempSceneState
     def locatorDriver(self):
         for sel in self.sels:
+            # error handling
+            if not self.sels:
+                cmds.warning('Nothing is selected. Aborting.')
+                return 0
+            if self.isValidBombLocator(sel) == 0:
+                cmds.warning(f'{sel} is not a valid bombLocator. Aborting reparenting.')
+                return 0
+            
             source = cmds.getAttr(sel + '.' + self.sourceAttributeName)
             # needs to check if the target attribute is open
             cmds.pointConstraint(sel, source)
@@ -134,7 +142,7 @@ class BombLocator(lib.SceneState):
             for obj in self.sels:
                 if self.isValidBombLocator(obj) == 0:
                     cmds.warning(f'{obj} is not a valid bombLocator. Aborting reparenting.')
-                    return 0            
+                    return 0
         else:
             parentObject = self.sels[-1]
             self.sels = self.sels[:-1]

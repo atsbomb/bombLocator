@@ -1,4 +1,4 @@
-bombLocator: Create a locator that plots out the current position/rotation or the animation thereof, later to be used to as a driver of space switching.
+bombLocator: Create a locator that plots out the current position/rotation or the animation thereof, later to be used to as a driver of the original object for space switching.
 
 # Installation
 

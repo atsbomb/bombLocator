@@ -52,6 +52,18 @@ class BombLocator(lib.SceneState):
         else:
             return 0
 
+    def isTranslationLocked(self, obj):
+        if cmds.getAttr(obj + '.tx', l=1): return 1
+        if cmds.getAttr(obj + '.ty', l=1): return 1
+        if cmds.getAttr(obj + '.tz', l=1): return 1
+        return 0
+
+    def isRotationLocked(self, obj):
+        if cmds.getAttr(obj + '.rx', l=1): return 1
+        if cmds.getAttr(obj + '.ry', l=1): return 1
+        if cmds.getAttr(obj + '.rz', l=1): return 1
+        return 0
+
     def getBombLocator(self):
         foundLocators = []
         allLocators = cmds.ls(type='locator')
@@ -115,9 +127,17 @@ class BombLocator(lib.SceneState):
                 return 0
             
             source = cmds.getAttr(sel + '.' + self.sourceAttributeName)
-            # needs to check if the target attribute is open
-            cmds.pointConstraint(sel, source)
-            cmds.orientConstraint(sel, source)
+            if self.isTranslationLocked(source):
+                cmds.warning(f'Translation of {source} is locked. Skipping to apply pointConstraint.')
+            else:
+                cmds.pointConstraint(sel, source)
+                print(f'Applied pointConstraint {sel} -> {source}')
+
+            if self.isRotationLocked(source):
+                cmds.warning(f'Rotation of {source} is locked. Skipping to apply orientConstraint.')
+            else:
+                cmds.orientConstraint(sel, source)
+                print(f'Applied orientConstraint {sel} -> {source}')
 
     @lib.SceneState.tempSceneState
     def reparentLocator(self, toWorld=0):

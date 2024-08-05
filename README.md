@@ -1,4 +1,4 @@
-bombLocator: Create a locator that plots out the current position/rotation or the animation thereof, later to be used to as a driver of the original object for space switching.
+Create a locator that plots out the current position/rotation or the animation thereof, later to be used to as a driver of the original object for space switching.
 
 # Installation
 
@@ -7,10 +7,57 @@ Make a copy of this entire folder under `maya/xxxx/scripts/bombLocator`. Access 
 # Functions
 
 - Create Static Locator
+```
+from bombLocator.main import *
+
+bl = BombLocator()
+bl.createLocator(anim=0)
+```
 - Create Animated Locator
+```
+from bombLocator.main import *
+
+bl = BombLocator()
+bl.createLocator(anim=1)
+```
 - Pin to World
+```
+from bombLocator.main import *
+
+bl = BombLocator()
+bl.createLocator(anim=1)
+
+bl = BombLocator()
+bl.locatorDriver()
+```
 - Bake and Delete Locator
+```
+from bombLocator.main import *
+
+bl = BombLocator()
+bl.deleteLocator()
+```
 - Reparent
+```
+from bombLocator.main import *
+
+bl = BombLocator()
+bl.reparentLocator(toWorld=0)
+```
 - Reparent to World
+```
+from bombLocator.main import *
+
+bl = BombLocator()
+bl.reparentLocator(toWorld=1)
+```
 - Select All Locators
+```
+import maya.cmds as cmds
+from bombLocator import *
+
+bl = BombLocator()
+cmds.select(bl.getBombLocator())
+
+```
 

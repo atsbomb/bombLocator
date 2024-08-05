@@ -2,7 +2,7 @@ Create a locator that plots out the current position/rotation or the animation t
 
 # Installation
 
-Make a copy of this entire folder under `maya/xxxx/scripts/bombLocator`. Access the functions directly from your preferred hotkey, or via marking menu provided. Place marking menu file `under maya/xxxx/prefs/markingMenus`.
+Make a copy of this entire folder under `maya/xxxx/scripts/bombLocator`. Access the functions directly from your preferred hotkey, or via provided marking menu. Place marking menu file `under maya/xxxx/prefs/markingMenus`.
 
 # Functions
 

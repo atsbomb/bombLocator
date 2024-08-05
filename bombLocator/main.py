@@ -111,8 +111,30 @@ class BombLocator(lib.SceneState):
 
     @lib.SceneState.tempSceneState
     def reparentLocator(self, toWorld=0):
+        # error handling for selection
+        if not self.sels:
+            cmds.warning('Nothing is selected. Aborting.')
+            return 0
+        if len(self.sels) <= 1 and toWorld == 0:
+            cmds.warning(f'Not enough objects selected for reparenting.')
+            return 0
+        if len(self.sels) == 1:
+            # skip if there's only one selection and the mode is set to world.
+            if toWorld == 1:
+                pass
+        else:
+            for obj in self.sels:
+                # skip for last object as the last object CAN be non bombLocator
+                if obj != self.sels[-1]:
+                    if self.isValidBombLocator(obj) == 0:
+                        cmds.warning(f'{obj} is not a valid bombLocator. Aborting reparenting.')
+                        return 0
+
         if toWorld:
-            pass
+            for obj in self.sels:
+                if self.isValidBombLocator(obj) == 0:
+                    cmds.warning(f'{obj} is not a valid bombLocator. Aborting reparenting.')
+                    return 0            
         else:
             parentObject = self.sels[-1]
             self.sels = self.sels[:-1]
@@ -129,7 +151,7 @@ class BombLocator(lib.SceneState):
             # bake, simulation off, preserve outside keys on.
             cmds.bakeResults(sel, time=self.playbackRange, sb=1, sm=0, pok=1)
             cmds.filterCurve(sel)
-            
+
             cmds.delete(self.generatedLocators)
             self.generatedLocators = []
 

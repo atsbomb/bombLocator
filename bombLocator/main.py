@@ -205,4 +205,19 @@ class BombLocator(lib.SceneState):
     def updateLocator(self):
         for sel in self.sels:
             if self.isValidBombLocator(sel):
-                pass
+                pairedSelection = []
+                
+                for loc in self.sels:
+                    cmds.setKeyframe(loc + '.t', loc + '.r')
+                    source = cmds.getAttr(loc + '.' + self.sourceAttributeName)
+                    pairedSelection.append([source, loc])
+
+                for f in range(self.playbackRange[0], self.playbackRange[1] + 1):
+                    cmds.currentTime(f)
+                    for pair in pairedSelection:
+                        transform = cmds.xform(pair[0], q=1, ws=1, t=1)
+                        cmds.xform(pair[1], ws=1, t=transform)
+                        rotation = cmds.xform(pair[0], q=1, ws=1, ro=1)
+                        cmds.xform(pair[1], ws=1, ro=rotation)
+                        cmds.setKeyframe(f'{pair[1]}.t')
+                        cmds.setKeyframe(f'{pair[1]}.r')

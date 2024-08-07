@@ -1,6 +1,6 @@
 # bombLocator
 
-Create a locator that plots out the position/rotation of current selection(s) or the animation thereof, later to be used to primarily as a driver of the original object for space switching.
+Create a locator that plots out the position/rotation of current selection(s) or the animation thereof, later to be used primarily as a driver of the original object for space switching.
 
 # Installation
 

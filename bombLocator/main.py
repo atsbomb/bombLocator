@@ -64,6 +64,10 @@ class BombLocator(lib.SceneState):
         if cmds.getAttr(obj + '.rz', l=1): return 1
         return 0
 
+    def isSourceComponent(self, source):
+        if '[' in source: return 1
+        else: return 0
+
     def getBombLocator(self):
         foundLocators = []
         allLocators = cmds.ls(type='locator')
@@ -123,10 +127,15 @@ class BombLocator(lib.SceneState):
                 cmds.warning('Nothing is selected. Aborting.')
                 return 0
             if self.isValidBombLocator(sel) == 0:
-                cmds.warning(f'{sel} is not a valid bombLocator. Aborting reparenting.')
+                cmds.warning(f'{sel} is not a valid bombLocator. Aborting.')
                 return 0
             
             source = cmds.getAttr(sel + '.' + self.sourceAttributeName)
+
+            if self.isSourceComponent(source):
+                cmds.warning(f"{sel}'s source {source} is component. Aborting parenting.")
+                return 0
+
             if self.isTranslationLocked(source):
                 cmds.warning(f'Translation of {source} is locked. Skipping to apply pointConstraint.')
             else:
@@ -208,8 +217,13 @@ class BombLocator(lib.SceneState):
                 pairedSelection = []
                 
                 for loc in self.sels:
-                    cmds.setKeyframe(loc + '.t', loc + '.r')
                     source = cmds.getAttr(loc + '.' + self.sourceAttributeName)
+                    
+                    if not cmds.objExists(source):
+                        cmds.warning(f"{loc}'s source {source} cannot be found. Aborting updating.")
+                        return 0
+
+                    cmds.setKeyframe(loc + '.t', loc + '.r')
                     pairedSelection.append([source, loc])
 
                 for f in range(self.playbackRange[0], self.playbackRange[1] + 1):

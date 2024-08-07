@@ -6,11 +6,10 @@ from . import lib
 # x All feature to work with animation when range is selected
 # - Vertex edge face track
 # x Pin to world (use stored source)
-# x Pin to world with offset
 # x change source
 # x Reparent with maintain animation
 # x make the bake and delete locator function
-# - implement update locator function
+# x implement update locator function
 
 class BombLocator(lib.SceneState):
     def __init__(self):
@@ -20,7 +19,6 @@ class BombLocator(lib.SceneState):
         self.warningNothingSelected = 'Nothing is selected. Creating a locator at the origin instead.'
         self.bombLocatorAttributeName = 'bombLocator'
         self.sourceAttributeName = 'source'
-        self.offsetAttributeName = 'offset'
 
         # CLASS VARIABLE
         self.playbackRange = self.getPlaybackRange()
@@ -37,10 +35,8 @@ class BombLocator(lib.SceneState):
             # embed meta data
             cmds.addAttr(loc, ln=self.bombLocatorAttributeName, dt='string')
             cmds.addAttr(loc, ln=self.sourceAttributeName, dt='string')
-            cmds.addAttr(loc, ln=self.offsetAttributeName, at='bool')
             cmds.setAttr(f'{loc}.{self.bombLocatorAttributeName}', 'bombLocator', type='string')
             cmds.setAttr(f'{loc}.{self.sourceAttributeName}', source, type='string')
-            cmds.setAttr(f'{loc}.{self.offsetAttributeName}', 0)
             cmds.setAttr(f'{loc}.{self.bombLocatorAttributeName}', lock=1)
 
         self.generatedLocators.append(loc)
@@ -193,14 +189,6 @@ class BombLocator(lib.SceneState):
 
             cmds.delete(self.generatedLocators)
             self.generatedLocators = []
-
-    @lib.SceneState.tempSceneState
-    def changeSource(self, offset=0):
-        newSource = self.sels[1]
-        cmds.setAttr(f'{self.sels[0]}.{self.sourceAttributeName}', newSource, type='string')
-        
-        if offset:
-            cmds.setAttr(f'{loc}.{self.offsetAttributeName}', 1)
 
     @lib.SceneState.tempSceneState
     def deleteLocator(self, bake=0):

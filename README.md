@@ -56,7 +56,7 @@ bl.reparentLocator(toWorld=1)
 - Update Locator
 ```
 import maya.cmds as cmds
-from bombLocator import *
+from bombLocator.main import *
 
 bl = BombLocator()
 bl.updateLocator()
@@ -64,7 +64,7 @@ bl.updateLocator()
 - Select All Locators
 ```
 import maya.cmds as cmds
-from bombLocator import *
+from bombLocator.main import *
 
 bl = BombLocator()
 cmds.select(bl.getBombLocator())

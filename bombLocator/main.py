@@ -187,8 +187,11 @@ class BombLocator(lib.SceneState):
         for sel in self.sels:
             if self.isValidBombLocator(sel):
                 source = cmds.getAttr(f'{sel}.{self.sourceAttributeName}')
-                cmds.bakeResults(source, time=self.playbackRange, sb=1, sm=0, pok=1)
-                cmds.delete(sel)
+                if cmds.objExists(source):
+                    cmds.bakeResults(source, time=self.playbackRange, sb=1, sm=0, pok=1)
+                    cmds.delete(sel)
+                else:
+                    print(f"{sel}'s source object: {source} cannot be found. Skipping baking and deleting.")
         
     @lib.SceneState.tempSceneState
     def updateLocator(self):

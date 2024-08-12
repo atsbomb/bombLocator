@@ -2,21 +2,14 @@ import maya.cmds as cmds
 from . import lib
 
 # todo
-# x Object track
-# x All feature to work with animation when range is selected
 # - Vertex edge face track
-# x Pin to world (use stored source)
-# x change source
-# x Reparent with maintain animation
-# x make the bake and delete locator function
-# x implement update locator function
+# - check if the source is driven by something (attr connection, constraints) on locatorDriver()
 
 class BombLocator(lib.SceneState):
     def __init__(self):
         super().__init__()
         
         # CONSTANT
-        self.warningNothingSelected = 'Nothing is selected. Creating a locator at the origin instead.'
         self.bombLocatorAttributeName = 'bombLocator'
         self.sourceAttributeName = 'source'
 
@@ -37,7 +30,6 @@ class BombLocator(lib.SceneState):
             cmds.addAttr(loc, ln=self.sourceAttributeName, dt='string')
             cmds.setAttr(f'{loc}.{self.bombLocatorAttributeName}', 'bombLocator', type='string')
             cmds.setAttr(f'{loc}.{self.sourceAttributeName}', source, type='string')
-            cmds.setAttr(f'{loc}.{self.bombLocatorAttributeName}', lock=1)
 
         self.generatedLocators.append(loc)
 
@@ -79,7 +71,7 @@ class BombLocator(lib.SceneState):
     def createLocator(self, anim=0):
         # if nothing is selected, create a single locator at the origin and exit.
         if not self.sels:
-            cmds.warning(self.warningNothingSelected)
+            cmds.warning('Nothing is selected. Creating a locator at the origin instead.')
             self.generateLocator(source = '')
             return 0
 

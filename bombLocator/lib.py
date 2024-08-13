@@ -63,4 +63,34 @@ class SceneState():
             return 0
         return 0
 
+    def getComponentCenter(self, component):
+        if 'f[' in component:
+            meshDag = component.split('.')[0]
+            vertexIndices = cmds.polyInfo(component, faceToVertex=1)[0].split()[2:]
+            vertexPos = []
+        
+            for index in vertexIndices:
+                vertexName = f'{meshDag}.vtx[{index}]'
+                position = cmds.xform(vertexName, q=1, ws=1, t=1)
+                vertexPos.append(position)
+            
+            if vertexPos:
+                centerX = sum(pos[0] for pos in vertexPos) / len(vertexPos)
+                centerY = sum(pos[1] for pos in vertexPos) / len(vertexPos)
+                centerZ = sum(pos[2] for pos in vertexPos) / len(vertexPos)
+                
+            return [centerX, centerY, centerZ]
+        
+        if 'e[' in component:
+            xforms = cmds.xform(component, q=1, ws=1, t=1)
+            centerPoint = [
+                (xforms[0] + xforms[3]) / 2,
+                (xforms[1] + xforms[4]) / 2,
+                (xforms[2] + xforms[5]) / 2
+            ]
+            return centerPoint
+            
+        if 'vtx[' in component:
+            return cmds.xform(component, q=1, ws=1, t=1)
+
 

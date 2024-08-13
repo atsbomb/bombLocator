@@ -80,10 +80,10 @@ class BombLocator(lib.SceneState):
             loc = self.generateLocator(source = sel)
 
             # align with selection
-            cmds.xform(loc, ws=1, t=cmds.xform(sel, q=1, ws=1, t=1))
             if self.isSelectionComponent():
-                pass
+                cmds.xform(loc, ws=1, t=self.getComponentCenter(sel))
             else:
+                cmds.xform(loc, ws=1, t=cmds.xform(sel, q=1, ws=1, t=1))
                 cmds.xform(loc, ws=1, ro=cmds.xform(sel, q=1, ws=1, ro=1))
 
         cmds.select(self.generatedLocators)
@@ -100,12 +100,21 @@ class BombLocator(lib.SceneState):
             for f in range(self.playbackRange[0], self.playbackRange[1] + 1):
                 cmds.currentTime(f)
                 for pair in pairedSelection:
-                    transform = cmds.xform(pair[0], q=1, ws=1, t=1)
-                    cmds.xform(pair[1], ws=1, t=transform)
-                    rotation = cmds.xform(pair[0], q=1, ws=1, ro=1)
-                    cmds.xform(pair[1], ws=1, ro=rotation)
-                    cmds.setKeyframe(f'{pair[1]}.t')
-                    cmds.setKeyframe(f'{pair[1]}.r')
+                    if self.isSelectionComponent():
+                        transform = self.getComponentCenter(pair[0])
+                        cmds.xform(pair[1], ws=1, t=transform)
+                        # needs to find a normal direction for components before implementing this
+                        #rotation = cmds.xform(pair[0], q=1, ws=1, ro=1)
+                        #cmds.xform(pair[1], ws=1, ro=rotation)
+                        cmds.setKeyframe(f'{pair[1]}.t')
+                        #cmds.setKeyframe(f'{pair[1]}.r')
+                    else:
+                        transform = cmds.xform(pair[0], q=1, ws=1, t=1)
+                        cmds.xform(pair[1], ws=1, t=transform)
+                        rotation = cmds.xform(pair[0], q=1, ws=1, ro=1)
+                        cmds.xform(pair[1], ws=1, ro=rotation)
+                        cmds.setKeyframe(f'{pair[1]}.t')
+                        cmds.setKeyframe(f'{pair[1]}.r')
 
     @lib.SceneState.tempSceneState
     def locatorDriver(self):

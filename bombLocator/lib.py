@@ -53,9 +53,9 @@ class SceneState():
     def getPlaybackRange(self):
         return (int(self.minPlayTime), int(self.maxPlayTime))
 
-    def isSelectionComponent(self):
-        if self.sels:
-            for sel in self.sels:
+    def isComponent(self, sels):
+        if sels:
+            for sel in sels:
                 if sel.find('[') != -1:
                     return 1
                 else:

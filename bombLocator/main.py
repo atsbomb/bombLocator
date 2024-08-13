@@ -22,7 +22,7 @@ class BombLocator(lib.SceneState):
         loc = cmds.spaceLocator()[0]
 
         # same rotation order as source, skip if nothing is selected.
-        if source and self.isSelectionComponent() == 0:
+        if source and self.isComponent(self.sels) == 0:
             cmds.setAttr(loc + '.ro', cmds.getAttr(source + '.ro'))
         if source:
             # embed meta data
@@ -80,7 +80,7 @@ class BombLocator(lib.SceneState):
             loc = self.generateLocator(source = sel)
 
             # align with selection
-            if self.isSelectionComponent():
+            if self.isComponent(self.sels):
                 cmds.xform(loc, ws=1, t=self.getComponentCenter(sel))
             else:
                 cmds.xform(loc, ws=1, t=cmds.xform(sel, q=1, ws=1, t=1))
@@ -100,7 +100,7 @@ class BombLocator(lib.SceneState):
             for f in range(self.playbackRange[0], self.playbackRange[1] + 1):
                 cmds.currentTime(f)
                 for pair in pairedSelection:
-                    if self.isSelectionComponent():
+                    if self.isComponent(pair[0]):
                         transform = self.getComponentCenter(pair[0])
                         cmds.xform(pair[1], ws=1, t=transform)
                         # needs to find a normal direction for components before implementing this
@@ -221,9 +221,18 @@ class BombLocator(lib.SceneState):
                 for f in range(self.playbackRange[0], self.playbackRange[1] + 1):
                     cmds.currentTime(f)
                     for pair in pairedSelection:
-                        transform = cmds.xform(pair[0], q=1, ws=1, t=1)
-                        cmds.xform(pair[1], ws=1, t=transform)
-                        rotation = cmds.xform(pair[0], q=1, ws=1, ro=1)
-                        cmds.xform(pair[1], ws=1, ro=rotation)
-                        cmds.setKeyframe(f'{pair[1]}.t')
-                        cmds.setKeyframe(f'{pair[1]}.r')
+                        if self.isComponent(pair[0]):
+                            transform = self.getComponentCenter(pair[0])
+                            cmds.xform(pair[1], ws=1, t=transform)
+                            # needs to find a normal direction for components before implementing this
+                            #rotation = cmds.xform(pair[0], q=1, ws=1, ro=1)
+                            #cmds.xform(pair[1], ws=1, ro=rotation)
+                            cmds.setKeyframe(f'{pair[1]}.t')
+                            #cmds.setKeyframe(f'{pair[1]}.r')
+                        else:
+                            transform = cmds.xform(pair[0], q=1, ws=1, t=1)
+                            cmds.xform(pair[1], ws=1, t=transform)
+                            rotation = cmds.xform(pair[0], q=1, ws=1, ro=1)
+                            cmds.xform(pair[1], ws=1, ro=rotation)
+                            cmds.setKeyframe(f'{pair[1]}.t')
+                            cmds.setKeyframe(f'{pair[1]}.r')

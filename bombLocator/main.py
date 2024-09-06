@@ -19,7 +19,10 @@ class BombLocator(lib.SceneState):
 
     def generateLocator(self, source):
         """ Actual locator generation.Adding meta data for later use. """
-        loc = cmds.spaceLocator()[0]
+        if source == '':
+            loc = cmds.spaceLocator()[0]
+        else:
+            loc = cmds.spaceLocator(n=f'{source}_loc')[0]
 
         # same rotation order as source, skip if nothing is selected.
         if source and self.isComponent(self.sels) == 0:

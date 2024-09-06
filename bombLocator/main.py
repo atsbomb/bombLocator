@@ -116,6 +116,8 @@ class BombLocator(lib.SceneState):
                         cmds.setKeyframe(f'{pair[1]}.t')
                         cmds.setKeyframe(f'{pair[1]}.r')
 
+            cmds.filterCurve(self.generatedLocators)
+
     @lib.SceneState.tempSceneState
     def locatorDriver(self):
         for sel in self.sels:
@@ -236,3 +238,5 @@ class BombLocator(lib.SceneState):
                             cmds.xform(pair[1], ws=1, ro=rotation)
                             cmds.setKeyframe(f'{pair[1]}.t')
                             cmds.setKeyframe(f'{pair[1]}.r')
+
+                        cmds.filterCurve(pair[1])

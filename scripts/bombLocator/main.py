@@ -112,10 +112,12 @@ class BombLocator(lib.SceneState):
                         cmds.setKeyframe(f'{pair[1]}.t')
                         #cmds.setKeyframe(f'{pair[1]}.r')
                     else:
-                        transform = cmds.xform(pair[0], q=1, ws=1, t=1)
-                        cmds.xform(pair[1], ws=1, t=transform)
-                        rotation = cmds.xform(pair[0], q=1, ws=1, ro=1)
-                        cmds.xform(pair[1], ws=1, ro=rotation)
+                        #transform = cmds.xform(pair[0], q=1, ws=1, t=1)
+                        #cmds.xform(pair[1], ws=1, t=transform)
+                        #rotation = cmds.xform(pair[0], q=1, ws=1, ro=1)
+                        #cmds.xform(pair[1], ws=1, ro=rotation)
+                        worldSpaceMatrix = cmds.xform(pair[0], q=1, ws=1, m=1)
+                        cmds.xform(pair[1], ws=1, m=worldSpaceMatrix)
                         cmds.setKeyframe(f'{pair[1]}.t')
                         cmds.setKeyframe(f'{pair[1]}.r')
 

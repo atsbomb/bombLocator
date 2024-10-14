@@ -100,10 +100,10 @@ class BombLocator(lib.SceneState):
                 source = cmds.getAttr(loc + '.' + self.sourceAttributeName)
                 pairedSelection.append([source, loc])
 
-            for f in range(self.playbackRange[0], self.playbackRange[1] + 1):
-                cmds.currentTime(f)
-                for pair in pairedSelection:
-                    if self.isComponent(pair[0]):
+            for pair in pairedSelection:
+                if self.isComponent(pair[0]):
+                    for f in range(self.playbackRange[0], self.playbackRange[1] + 1):
+                        cmds.currentTime(f)
                         transform = self.getComponentCenter(pair[0])
                         cmds.xform(pair[1], ws=1, t=transform)
                         # needs to find a normal direction for components before implementing this
@@ -111,15 +111,11 @@ class BombLocator(lib.SceneState):
                         #cmds.xform(pair[1], ws=1, ro=rotation)
                         cmds.setKeyframe(f'{pair[1]}.t')
                         #cmds.setKeyframe(f'{pair[1]}.r')
-                    else:
-                        #transform = cmds.xform(pair[0], q=1, ws=1, t=1)
-                        #cmds.xform(pair[1], ws=1, t=transform)
-                        #rotation = cmds.xform(pair[0], q=1, ws=1, ro=1)
-                        #cmds.xform(pair[1], ws=1, ro=rotation)
-                        worldSpaceMatrix = cmds.xform(pair[0], q=1, ws=1, m=1)
-                        cmds.xform(pair[1], ws=1, m=worldSpaceMatrix)
-                        cmds.setKeyframe(f'{pair[1]}.t')
-                        cmds.setKeyframe(f'{pair[1]}.r')
+                else:
+                    cmds.delete(pair[1], constraints=1)
+                    cmds.parentConstraint(pair[0], pair[1], mo=0)
+                    cmds.bakeResults(pair[1], time=self.playbackRange, sb=1, sm=0, pok=1)
+                    cmds.delete(pair[1], constraints=1)
 
             cmds.filterCurve(self.generatedLocators)
 
@@ -225,10 +221,10 @@ class BombLocator(lib.SceneState):
                     cmds.setKeyframe(loc + '.t', loc + '.r')
                     pairedSelection.append([source, loc])
 
-                for f in range(self.playbackRange[0], self.playbackRange[1] + 1):
-                    cmds.currentTime(f)
-                    for pair in pairedSelection:
-                        if self.isComponent(pair[0]):
+                for pair in pairedSelection:
+                    if self.isComponent(pair[0]):
+                        for f in range(self.playbackRange[0], self.playbackRange[1] + 1):
+                            cmds.currentTime(f)
                             transform = self.getComponentCenter(pair[0])
                             cmds.xform(pair[1], ws=1, t=transform)
                             # needs to find a normal direction for components before implementing this
@@ -236,12 +232,10 @@ class BombLocator(lib.SceneState):
                             #cmds.xform(pair[1], ws=1, ro=rotation)
                             cmds.setKeyframe(f'{pair[1]}.t')
                             #cmds.setKeyframe(f'{pair[1]}.r')
-                        else:
-                            transform = cmds.xform(pair[0], q=1, ws=1, t=1)
-                            cmds.xform(pair[1], ws=1, t=transform)
-                            rotation = cmds.xform(pair[0], q=1, ws=1, ro=1)
-                            cmds.xform(pair[1], ws=1, ro=rotation)
-                            cmds.setKeyframe(f'{pair[1]}.t')
-                            cmds.setKeyframe(f'{pair[1]}.r')
+                    else:
+                        cmds.delete(pair[1], constraints=1)
+                        cmds.parentConstraint(pair[0], pair[1], mo=0)
+                        cmds.bakeResults(pair[1], time=self.playbackRange, sb=1, sm=0, pok=1)
+                        cmds.delete(pair[1], constraints=1)
 
-                        cmds.filterCurve(pair[1])
+                    cmds.filterCurve(pair[1])

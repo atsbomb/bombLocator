@@ -4,7 +4,7 @@ Create a locator that plots out the position/rotation of current selection(s) or
 
 # Installation
 
-Make a copy of this entire folder under `maya/xxxx/scripts/bombLocator`. Access the functions directly from your preferred hotkey, or via provided marking menu. Place marking menu file `under maya/xxxx/prefs/markingMenus`.
+Clone this repository and add MAYA_MODULE_PATH to your Maya.env. Access the functions directly from your preferred hotkey, or via provided marking menu. Place marking menu file under `maya/xxxx/prefs/markingMenus`.
 
 # Functions
 
@@ -28,8 +28,6 @@ from bombLocator.main import *
 
 bl = BombLocator()
 bl.createLocator(anim=1)
-
-bl = BombLocator()
 bl.locatorDriver()
 ```
 - Bake and Delete Locator
